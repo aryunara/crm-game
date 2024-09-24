@@ -10,12 +10,10 @@ services:
         volumes:
             - '.:/var/www/html'
             - './docker/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini'
-        links:
-            - db
         env_file:
             - .env
         depends_on:
-            -   db
+            - db
 
 
     nginx:
@@ -26,7 +24,7 @@ services:
         volumes:
             - '.:/var/www/html'
             - './docker/nginx/conf.d:/etc/nginx/conf.d'
-        links:
+        depends_on:
             - php
 
     db:
@@ -38,8 +36,7 @@ services:
             - MYSQL_PASSWORD=${DB_PASSWORD}
             - MYSQL_CONNECTION=${DB_CONNECTION}
             - MYSQL_HOST=${DB_HOST}
-            - MYSQL_ROOT_PASSWORD=030201qwe
-
+            - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
         ports:
             - "3306:3306"
         volumes:
